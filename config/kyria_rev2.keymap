@@ -5,26 +5,112 @@
  */
 
 #include <behaviors.dtsi>
+#include <dt-bindings/zmk/modifiers.h>
 #include <dt-bindings/zmk/keys.h>
 
+// Indentifiers for layers
+#define DEF 0
+#define NUM 1
+#define SYM 2
+#define FUN 3
+
+// Swedish layout vowels
+#define SE_ARNG LBKT // Å
+#define SE_ADIA APOS // Ä
+#define SE_ODIA SEMI // Ö
+
+// Swedish layout symbols
+#define SE_PLUS  MINUS     // +
+#define SE_MINUS FSLH      // -
+#define SE_APOS  NUHS      // '
+#define SE_DQT   AT        // "
+#define SE_CURR  DLLR      // ¤
+#define SE_AMPS  CARET     // &
+#define SE_FSLH  AMPS      // /
+#define SE_LPAR  STAR      // (
+#define SE_RPAR  LPAR      // )
+#define SE_EQUAL RPAR      // =
+#define SE_QMARK UNDER     // ?
+#define SE_DIAE  RBKT      // ¨ (dead)
+#define SE_ACUTE EQUAL     // ´ (dead)
+#define SE_GRAVE PLUS      // ` (dead)
+#define SE_CARET RBRC      // ^ (dead)
+#define SE_STAR  PIPE      // *
+#define SE_LT    NUBS      // <
+#define SE_GT    LS(NUBS)  // >
+#define SE_SEMI  LT        // ;
+#define SE_COLON GT        // :
+#define SE_UNDER QMARK     // _
+#define SE_AT    RA(N2)    // @
+#define SE_PND   RA(N3)    // £
+#define SE_DLLR  RA(N4)    // $
+#define SE_EURO  RA(N5)    // €
+#define SE_LBRC  RA(N7)    // {
+#define SE_LBKT  RA(N8)    // [
+#define SE_RBKT  RA(N9)    // ]
+#define SE_RBRC  RA(N0)    // }
+#define SE_TILDE RA(RBKT)  // ~ (dead)
+#define SE_BSLH  RA(MINUS) // \ (bslh)
+#define SE_PIPE  RA(NUBS)  // |
+
 / {
-	keymap {
-		compatible = "zmk,keymap";
+    behaviors {
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS";
+            #binding-cells = <2>;
+            flavor = "tap-unless-interrupted";
+            tapping-term-ms = <100>;
+            quick-tap-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
 
-		default_layer {
-// ---------------------------------------------------------------------------------------------------------------------------------
-// |  ESC  |  Q  |  W  |  E   |  R   |  T   |                                          |  Y   |  U    |  I    |  O   |   P   |   \  |
-// |  TAB  |  A  |  S  |  D   |  F   |  G   |                                          |  H   |  J    |  K    |  L   |   ;   |   '  |
-// | SHIFT |  Z  |  X  |  C   |  V   |  B   | L SHIFT | L SHIFT |  | L SHIFT | L SHIFT |  N   |  M    |  ,    |  .   |   /   | CTRL |
-//                     | GUI  | DEL  | RET  |  SPACE  |   ESC   |  |   RET   |  SPACE  | TAB  | BSPC  | R-ALT |
-			bindings = <
-	&kp ESC   &kp Q &kp W &kp E &kp R &kp T                                                &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSLH
-	&kp TAB   &kp A &kp S &kp D &kp F &kp G                                                &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-	&kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp LSHFT &kp LSHFT        &kp LSHFT &kp LSHFT &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp RCTRL
-	                 &kp LGUI &kp DEL &kp RET &kp SPACE &kp ESC        &kp RET  &kp SPACE  &kp TAB &kp BSPC &kp RALT
-			>;
+    keymap {
+        compatible = "zmk,keymap";
 
-			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-		};
-	};
+        default_layer {
+            label = "Default";
+
+            bindings = <
+    &none &kp Q &kp W &kp F    &kp P         &kp B                                                    &kp J   &kp L        &kp U       &kp Y      &kp SE_MINUS &none
+    &none &kp A &kp R &kp S    &kp T         &kp G                                                    &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O   &none
+    &none &kp Z &kp X &kp C    &kp D         &kp V    &kp LCTRL &kp LCTRL    &kp RCTRL &kp RCTRL      &kp K   &kp H        &kp COMMA   &kp DOT    &kp SE_FSLH  &none
+                      &kp LGUI &mt LCTRL ESC &kp BSPC &kp SPACE &mo NUM      &mo SYM   &mt RSHIFT RET &kp DEL &mt LALT TAB &kp RGUI
+            >;
+        };
+
+        number_layer {
+            label = "Number";
+
+            bindings = <
+    &none &kp C_PREV &kp N7 &kp N8 &kp N9 &kp C_NEXT                                   &kp SE_ARNG &kp K_APP &kp C_BRI_DN &kp C_BRI_UP &kp PSCRN &none
+    &none &kp C_PP   &kp N4 &kp N5 &kp N6 &kp C_VOL_UP                                 &kp SE_ADIA &kp LEFT  &kp DOWN     &kp UP       &kp RIGHT &none
+    &none &kp N0     &kp N1 &kp N2 &kp N3 &kp C_VOL_DN &trans &trans    &trans  &trans &kp SE_ODIA &kp HOME  &kp PG_DN    &kp PG_UP    &kp END   &none
+                            &trans &trans &trans       &trans &trans    &mo FUN &trans &trans      &trans    &trans
+            >;
+        };
+
+        symbol_layer {
+            label = "Symbol";
+
+            bindings = <
+    &none &kp SE_LT &kp SE_LBKT &kp SE_LBRC  &kp SE_LPAR  &kp SE_FSLH                                 &kp SE_BSLH &kp SE_RPAR  &kp SE_RBRC  &kp SE_RBKT  &kp SE_GT   &none
+    &none &kp HASH  &kp SE_STAR &kp SE_PLUS  &kp SE_UNDER &kp SE_AT                                   &kp SE_AMPS &kp SE_MINUS &kp SE_EQUAL &kp SE_CARET &kp SE_DLLR &none
+    &none &kp PRCNT &kp EXCL    &kp SE_GRAVE &kp SE_COLON &kp SE_APOS &trans &trans     &trans &trans &kp SE_DQT  &kp SE_SEMI  &kp SE_TILDE &kp SE_QMARK &kp SE_PIPE &none
+                                &trans       &trans       &trans      &trans &mo FUN    &trans &trans &trans      &trans       &trans
+            >;
+        };
+
+        function_layer {
+            label = "Function";
+
+            bindings = <
+    &none &kp F12 &kp F7 &kp F8 &kp F9 &none                                 &none  &none  &none  &none &none &none
+    &none &kp F11 &kp F4 &kp F5 &kp F6 &none                                 &none  &none  &none  &none &none &none
+    &none &kp F10 &kp F1 &kp F2 &kp F3 &none  &trans &trans    &trans &trans &none  &none  &none  &none &none &none
+                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
+            >;
+        };
+    };
 };
