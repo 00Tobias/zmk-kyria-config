@@ -54,18 +54,6 @@
 #define SE_PIPE  RA(NUBS)  // |
 
 / {
-    behaviors {
-        hm: homerow_mods {
-            compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_MODS";
-            #binding-cells = <2>;
-            flavor = "tap-unless-interrupted";
-            tapping-term-ms = <100>;
-            quick-tap-ms = <200>;
-            bindings = <&kp>, <&kp>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
@@ -73,10 +61,10 @@
             label = "Default";
 
             bindings = <
-    &none &kp Q &kp W &kp F    &kp P         &kp B                                                    &kp J   &kp L        &kp U       &kp Y      &kp SE_MINUS &none
-    &none &kp A &kp R &kp S    &kp T         &kp G                                                    &kp M   &hm RSHIFT N &hm RCTRL E &hm RALT I &hm RGUI O   &none
-    &none &kp Z &kp X &kp C    &kp D         &kp V    &kp LCTRL &kp LCTRL    &kp RCTRL &kp RCTRL      &kp K   &kp H        &kp COMMA   &kp DOT    &kp SE_FSLH  &none
-                      &kp LGUI &mt LCTRL ESC &kp BSPC &kp SPACE &mo NUM      &mo SYM   &mt RSHIFT RET &kp DEL &mt LALT TAB &kp RGUI
+    &none &kp Q &kp W &kp F    &kp P         &kp B                                                    &kp J         &kp L        &kp U     &kp Y   &kp SE_MINUS &none
+    &none &kp A &kp R &kp S    &kp T         &kp G                                                    &kp M         &kp N        &kp E     &kp I   &kp O        &none
+    &none &kp Z &kp X &kp C    &kp D         &kp V    &kp LCTRL &kp LCTRL    &kp RCTRL &kp RCTRL      &kp K         &kp H        &kp COMMA &kp DOT &kp SE_FSLH  &none
+                      &kp LGUI &mt LCTRL ESC &kp BSPC &kp SPACE &mo NUM      &mo SYM   &mt RSHIFT RET &mt RCTRL TAB &mt LALT DEL &kp RGUI
             >;
         };
 
